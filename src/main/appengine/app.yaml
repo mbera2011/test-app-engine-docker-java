@@ -1,0 +1,32 @@
+runtime: java
+env: flex
+runtime_config:
+  jdk: openjdk8
+handlers:
+  - url: /java-app/.*
+    script: this field is required, but ignored
+# Application Resources
+resources:
+  cpu: 2
+  memory_gb: 2
+  disk_size_gb: 10
+  volumes:
+    - name: ramdisk1
+      volume_type: tmpfs
+      size_gb: 0.5
+
+# Automatic Scaling
+automatic_scaling:
+  min_num_instances: 1
+  max_num_instances: 3
+  cool_down_period_sec: 180
+  cpu_utilization:
+    target_utilization: 0.6
+
+readiness_check:
+  path: "/java-app/actuator/health"
+  check_interval_sec: 30
+  timeout_sec: 2
+  failure_threshold: 3
+  success_threshold: 2
+  app_start_timeout_sec: 300
